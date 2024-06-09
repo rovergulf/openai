@@ -1,0 +1,17 @@
+.idea/
+.vscode/*
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Test binary, built with `go test -c`
+*.test
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+

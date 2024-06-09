@@ -1,0 +1,744 @@
+openapi: 3.0.0
+info:
+  description: OpenAI API based on documentation
+  version: "0.0.1"
+  title: OpenAI API
+  termsOfService: 'None'
+  contact:
+    email: dev@rovergulf.net
+  license:
+    name: Unlicensed
+servers:
+  - description: OpenAI API official server
+    url: https://api.openai.com
+tags:
+  - name: models
+  - name: chat-gpt
+    description: Chat GPT operations
+  - name: dalle
+    description: DALL-E operations
+  - name: assistants
+    description: Assistants operations
+  - name: threads
+    description: Threads operations
+  - name: messages
+    description: Messages operations
+externalDocs:
+  description: Example description
+  url: ''
+paths:
+  /v1/models:
+    get:
+      tags:
+        - models
+      summary: Get models
+      operationId: getModels
+      security:
+        - BearerAuth: [ ]
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsResponse'
+        '400':
+          description: Invalid body parameters specified
+  /v1/chat/completions:
+    post:
+      tags:
+        - chat-gpt
+      summary: Create completion
+      operationId: createCompletion
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionRequest'
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionResponse'
+        '400':
+          description: Invalid body parameters specified
+  /v1/images/generations:
+    post:
+      tags:
+        - dalle
+      summary: Generate image
+      operationId: genImage
+      security:
+        - BearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageGenRequest'
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageGenResponse'
+        '400':
+          description: Invalid body parameters specified
+  /v1/assistants:
+    post:
+      tags:
+        - assistants
+      summary: Create assistant
+      operationId: createAssistant
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Assistant'
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assistant'
+        '400':
+          description: Invalid body parameters specified
+    get:
+      tags:
+        - assistants
+      summary: List assistant
+      operationId: listAssistants
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: number
+            default: 20
+        - in: query
+          name: after
+          schema:
+            type: string
+        - in: query
+          name: before
+          schema:
+            type: string
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: 'DESC'
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAssistantsResponse'
+  /v1/assistants/{id}:
+    post:
+      tags:
+        - assistants
+      summary: Modify assistant
+      operationId: modifyAssistant
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Assistant'
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assistant'
+        '400':
+          description: Invalid body parameters specified
+    get:
+      tags:
+        - assistants
+      summary: Retrieve assistant
+      operationId: retrieveAssistant
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assistant'
+    delete:
+      tags:
+        - assistants
+      summary: Delete assistant
+      operationId: deleteAssistant
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+  /v1/threads:
+    post:
+      tags:
+        - threads
+      summary: Create thread
+      operationId: createThread
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Thread'
+        '400':
+          description: Invalid body parameters specified
+  /v1/threads/{threadId}:
+    post:
+      tags:
+        - threads
+      summary: Modify thread
+      operationId: modifyThread
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: threadId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Thread'
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Thread'
+        '400':
+          description: Invalid body parameters specified
+    get:
+      tags:
+        - threads
+      summary: Retrieve thread
+      operationId: retrieveThread
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: threadId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Assistant'
+    delete:
+      tags:
+        - threads
+      summary: Delete thread
+      operationId: deleteThread
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+  /v1/threads/{threadId}/messages:
+    post:
+      tags:
+        - messages
+      summary: Create message
+      operationId: createMessage
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: threadId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionMessage'
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '400':
+          description: Invalid body parameters specified
+    get:
+      tags:
+        - messages
+      summary: List messages
+      operationId: listMessages
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: threadId
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: limit
+          schema:
+            type: number
+            default: 20
+        - in: query
+          name: after
+          schema:
+            type: string
+        - in: query
+          name: before
+          schema:
+            type: string
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: 'DESC'
+        - in: query
+          name: run_id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMessagesResponse'
+  /v1/threads/{threadId}/messages/{messageId}:
+    post:
+      tags:
+        - messages
+      summary: Modify message
+      operationId: modifyMessage
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: threadId
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: messageId
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '400':
+          description: Invalid body parameters specified
+    get:
+      tags:
+        - messages
+      summary: Retrieve message
+      operationId: retrieveMessage
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: threadId
+          schema:
+            type: string
+        - in: path
+          name: messageId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+    delete:
+      tags:
+        - messages
+      summary: Delete message
+      operationId: deleteMessage
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - in: header
+          name: OpenAI-Beta
+          example: assistants=v2
+          schema:
+            type: string
+        - in: path
+          name: threadId
+          schema:
+            type: string
+        - in: path
+          name: messageId
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      name: Authorization
+      in: header
+  schemas:
+    CompletionMessage:
+      type: object
+      properties:
+        role:
+          type: string
+        content:
+          type: string
+    CompletionRequest:
+      type: object
+      properties:
+        model:
+          type: string
+          example: "gpt-4o"
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompletionMessage'
+    CompletionResponse:
+      type: object
+      properties:
+        data:
+          type: object
+    ModelsResponse:
+      type: object
+      properties:
+        object:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        ownedBy:
+          type: string
+        created:
+          type: number
+    ImageGenRequest:
+      type: object
+      properties:
+        model:
+          type: string
+          example: dall-e-3
+        prompt:
+          type: string
+        size:
+          type: string
+          example: 1024x1024
+        n:
+          type: number
+          example: 1
+    ImageGenItem:
+      type: object
+      properties:
+        revised_prompt:
+          type: number
+        url:
+          type: string
+        b64_json:
+          type: string
+    ImageGenResponse:
+      type: object
+      properties:
+        created:
+          type: number
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageGenItem'
+    Tool:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'code_interpreter or file_search'
+    Assistant:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        model:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        instructions:
+          type: string
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tool'
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+          format: float32
+        top_p:
+          type: number
+          minimum: 0
+          maximum: 2
+          format: float32
+        response_format:
+          type: string
+      required:
+        - model
+        - name
+        - instructions
+    ListAssistantsResponse:
+      type: object
+      properties:
+        object:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Assistant'
+        first_id:
+          type: string
+        last_id:
+          type: string
+        has_more:
+          type: boolean
+    CreateMessageRequest:
+      type: object
+      properties:
+        role:
+          type: string
+        content:
+          type: string
+    MessageText:
+      type: object
+      properties:
+        value:
+          type: string
+        annotations:
+          type: array
+    MessageContent:
+      type: object
+      properties:
+        type:
+          type: string
+        text:
+          $ref: '#/components/schemas/MessageText'
+        image_url:
+          type: string
+        image_file:
+          type: string
+    Message:
+      type: object
+      properties:
+        role:
+          type: string
+        thread_id:
+          type: string
+        content:
+          $ref: '#/components/schemas/MessageContent'
+        created_at:
+          type: number
+        assistant_id:
+          type: string
+        run_id:
+          type: string
+    ListMessagesResponse:
+      type: object
+      properties:
+        object:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+        first_id:
+          type: string
+        last_id:
+          type: string
+        has_more:
+          type: boolean
+    Thread:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    DeleteResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        deleted:
+          type: boolean
+    Run:
+      type: object
+      properties:
+        assistant_id:
+          type: string
+        thread_id:
+          type: string
+      required:
+        - assistant_id
