@@ -1,6 +1,10 @@
 package openai
 
-import "fmt"
+import (
+	"fmt"
+	"net/url"
+	"strconv"
+)
 
 const (
 	ChatGPT35Turbo = "gpt-3.5-turbo"
@@ -54,6 +58,27 @@ type ListRequestParams struct {
 	Order  string `json:"order"`
 	After  string `json:"after"`
 	Before string `json:"before"`
+}
+
+func (req *ListRequestParams) toUrlValues() url.Values {
+	query := url.Values{}
+	if req.Limit > 0 {
+		query.Set("limit", strconv.Itoa(req.Limit))
+	}
+
+	if req.Order != "" {
+		query.Set("order", req.Order)
+	}
+
+	if req.Before != "" {
+		query.Set("before", req.Before)
+	}
+
+	if req.After != "" {
+		query.Set("after", req.After)
+	}
+
+	return query
 }
 
 type ListResponse[T any] struct {

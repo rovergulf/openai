@@ -72,7 +72,7 @@ func (c *client) CreateAssistant(ctx context.Context, req *Assistant) (*Assistan
 	if err := c.makeRequest(
 		ctx,
 		http.MethodPost,
-		assistantUrl,
+		assistantsUrl,
 		headers,
 		req,
 		&result,
@@ -89,12 +89,12 @@ func (c *client) ListAssistants(ctx context.Context, req *ListRequestParams) (*L
 	headers := http.Header{}
 	headers.Add("OpenAI-Beta", "assistants=v2")
 
-	query := req.ToUrlValues()
+	query := req.toUrlValues()
 
 	if err := c.makeRequest(
 		ctx,
 		http.MethodGet,
-		assistantUrl+"?"+query.Encode(),
+		assistantsUrl+"?"+query.Encode(),
 		headers,
 		req,
 		&result,
@@ -111,7 +111,7 @@ func (c *client) RetrieveAssistant(ctx context.Context, id string) (*Assistant, 
 	headers := http.Header{}
 	headers.Add("OpenAI-Beta", "assistants=v2")
 
-	requestUrl := fmt.Sprintf(assistantUrlFmt, id)
+	requestUrl := fmt.Sprintf(assistantUrl, id)
 	if err := c.makeRequest(
 		ctx,
 		http.MethodGet,
@@ -132,7 +132,7 @@ func (c *client) ModifyAssistant(ctx context.Context, id string, data *Assistant
 	headers := http.Header{}
 	headers.Add("OpenAI-Beta", "assistants=v2")
 
-	requestUrl := fmt.Sprintf(assistantUrlFmt, id)
+	requestUrl := fmt.Sprintf(assistantUrl, id)
 	if err := c.makeRequest(
 		ctx,
 		http.MethodPost,
@@ -148,7 +148,7 @@ func (c *client) ModifyAssistant(ctx context.Context, id string, data *Assistant
 }
 
 func (c *client) DeleteAssistant(ctx context.Context, id string) (*DeleteResponse, error) {
-	requestUrl := fmt.Sprintf(assistantUrlFmt, id)
+	requestUrl := fmt.Sprintf(assistantUrl, id)
 
 	return c.deleteEntity(ctx, requestUrl)
 }
@@ -268,7 +268,7 @@ func (c *client) ListMessages(ctx context.Context, threadId string, req *Message
 	headers := http.Header{}
 	headers.Add("OpenAI-Beta", "assistants=v2")
 
-	query := req.ToUrlValues()
+	query := req.toUrlValues()
 
 	requestUrl := fmt.Sprintf(messagesUrlFmt, threadId)
 	if err := c.makeRequest(

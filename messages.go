@@ -6,11 +6,8 @@ const (
 )
 
 type MessagesRequest struct {
-	Limit  int    `json:"limit"` // defaults to 20
-	Order  string `json:"order"`
-	After  string `json:"after"`
-	Before string `json:"before"`
-	RunId  string `json:"run_id"`
+	ListRequestParams
+	RunId string `json:"run_id"`
 }
 
 type MessageAttachment struct {
