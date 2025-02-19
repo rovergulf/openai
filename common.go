@@ -8,12 +8,15 @@ import (
 
 // Reference: https://platform.openai.com/docs/models
 const (
-	GPT35Turbo = "gpt-3.5-turbo"
-	GPT4o      = "gpt-4o"
-	GPT4Turbo  = "gpt-4-turbo"
-	O1         = "o1"
-	O1Mini     = "o1-mini"
-	O3Mini     = "o3-mini"
+	GPT4o                    = "gpt-4o"
+	GPT4oAudioPreview        = "gpt-4o-audio-preview"
+	GPT4oRealtimePreview     = "gpt-4o-realtime-preview"
+	GPT4oMini                = "gpt-4o-mini"
+	GPT4oMiniAudioPreview    = "gpt-4o-mini-audio-preview"
+	GPT4oMiniRealtimePreview = "gpt-4o-mini-realtime-preview"
+	O1                       = "o1"
+	O1Mini                   = "o1-mini"
+	O3Mini                   = "o3-mini"
 )
 
 const (
