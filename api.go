@@ -150,7 +150,7 @@ func (c *client) ModifyAssistant(ctx context.Context, id string, data *Assistant
 func (c *client) DeleteAssistant(ctx context.Context, id string) (*DeleteResponse, error) {
 	requestUrl := fmt.Sprintf(assistantUrl, id)
 
-	return c.deleteEntity(ctx, requestUrl)
+	return c.deleteAssistantEntity(ctx, requestUrl)
 }
 
 func (c *client) CreateThread(ctx context.Context) (*Thread, error) {
@@ -218,10 +218,10 @@ func (c *client) ModifyThread(ctx context.Context, id string, data *Thread) (*Th
 func (c *client) DeleteThread(ctx context.Context, id string) (*DeleteResponse, error) {
 	requestUrl := fmt.Sprintf(threadUrlFmt, id)
 
-	return c.deleteEntity(ctx, requestUrl)
+	return c.deleteAssistantEntity(ctx, requestUrl)
 }
 
-func (c *client) deleteEntity(ctx context.Context, requestUrl string) (*DeleteResponse, error) {
+func (c *client) deleteAssistantEntity(ctx context.Context, requestUrl string) (*DeleteResponse, error) {
 	var result DeleteResponse
 
 	headers := http.Header{}
@@ -330,5 +330,5 @@ func (c *client) ModifyMessage(ctx context.Context, threadId, messageId string, 
 func (c *client) DeleteMessage(ctx context.Context, threadId, messageId string) (*DeleteResponse, error) {
 	requestUrl := fmt.Sprintf(messageUrlFmt, threadId, messageId)
 
-	return c.deleteEntity(ctx, requestUrl)
+	return c.deleteAssistantEntity(ctx, requestUrl)
 }
