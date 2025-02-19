@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/rovergulf/openai"
 	"log"
 	"os"
+
+	"github.com/rovergulf/openai"
 )
 
 // https://platform.openai.com/docs/api-reference/chat/create
@@ -18,7 +19,7 @@ func main() {
 	client := openai.NewClient(apiKey)
 
 	req := &openai.CompletionRequest{
-		Model: openai.ChatGPT4o,
+		Model: openai.GPT4o,
 		Messages: []*openai.CompletionMessage{
 			{
 				Role:    openai.SystemRole,

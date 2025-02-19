@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/rovergulf/openai"
 	"log"
 	"os"
+
+	"github.com/rovergulf/openai"
 )
 
 func main() {

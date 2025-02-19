@@ -6,10 +6,14 @@ import (
 	"strconv"
 )
 
+// Reference: https://platform.openai.com/docs/models
 const (
-	ChatGPT35Turbo = "gpt-3.5-turbo"
-	ChatGPT4o      = "gpt-4o"
-	ChatGPT4Turbo  = "gpt-4-turbo"
+	GPT35Turbo = "gpt-3.5-turbo"
+	GPT4o      = "gpt-4o"
+	GPT4Turbo  = "gpt-4-turbo"
+	O1         = "o1"
+	O1Mini     = "o1-mini"
+	O3Mini     = "o3-mini"
 )
 
 const (
