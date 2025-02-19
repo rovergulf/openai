@@ -19,7 +19,7 @@ func main() {
 	client := openai.NewClient(apiKey)
 
 	req := &openai.CompletionRequest{
-		Model: openai.GPT4o,
+		Model: openai.O3Mini,
 		Messages: []*openai.CompletionMessage{
 			{
 				Role:    openai.SystemRole,
